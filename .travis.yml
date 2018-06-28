@@ -1,0 +1,36 @@
+sudo: false
+
+language: java
+jdk:
+  - oraclejdk10
+
+git:
+  depth: 1
+
+env:
+  global:
+    - GH_REPO_NAME: ineundo
+    - DOC_BUILD_DIR: docs
+
+cache:
+  apt: true
+  directories:
+    - $HOME/.m2
+
+script:
+  - ./gradlew clean --stacktrace
+  - ./gradlew test check --stacktrace
+  - ./gradlew fatjar --stacktrace
+  - ./gradlew javadoc --stacktrace
+
+deploy:
+  provider: script
+  script: ./gradlew artifactoryPublish --stacktrace
+  on:
+    branch:
+      - master
+      - develop
+
+notifications:
+  email:
+    on_success: never
