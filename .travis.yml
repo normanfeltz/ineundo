@@ -1,4 +1,7 @@
-sudo: false
+sudo: required
+
+services:
+  - docker
 
 language: java
 jdk:
@@ -22,6 +25,7 @@ script:
   - ./gradlew test check --stacktrace
   - ./gradlew fatjar --stacktrace
   - ./gradlew javadoc --stacktrace
+  - .scripts/docker-build.sh
 
 deploy:
   provider: script
